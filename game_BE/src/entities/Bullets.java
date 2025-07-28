@@ -1,5 +1,8 @@
 package entities;
 
+import javafx.geometry.BoundingBox;
+import javafx.geometry.Bounds;
+
 public class Bullets {
     private double x, y;
     private double speed;
@@ -20,5 +23,11 @@ public class Bullets {
     
     public double getX() { return x; }
     public double getY() { return y; }
+    
+
+    
+	public Bounds getBounds() {
+    	return new BoundingBox((int) x, (int) y, 5, 10); // Match rendering size
+}
 }
 

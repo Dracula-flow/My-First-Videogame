@@ -1,5 +1,8 @@
 package entities;
 
+import javafx.geometry.BoundingBox;
+import javafx.geometry.Bounds;
+
 public class EnemyGrunt extends Entities {
 	private boolean alive = true;
 
@@ -43,6 +46,10 @@ public class EnemyGrunt extends Entities {
 
     public double getHeight() {
         return 50;
+    }
+    
+    public Bounds getBounds() {
+        return new BoundingBox((int)x, (int)y, (int)getWidth(), (int)getHeight());
     }
 }
 

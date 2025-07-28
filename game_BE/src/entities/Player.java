@@ -24,12 +24,16 @@ public class Player extends Entities {
 		 	//To make sure the shots have a delay
 		 	timeSinceLastShot += deltaTime;
 		 	
+		 	int before = bullets.size();
+		 	
 		 // Remove off-screen bullets
 		    bullets.removeIf(b -> b.getX() > 800 || b.getX() < 0 || b.getY() > 600 || b.getY() < 0);
 	        // Update bullets
 	        for (Bullets bullet : bullets) {
 	            bullet.update(deltaTime);
+	            
 	        }
+	        System.out.println("[UPDATE] Player bullets before: " + before + ", after: " + bullets.size());
 	    }
 
 	    public void shoot() {
@@ -38,6 +42,7 @@ public class Player extends Entities {
 	        Bullets newBullet = new Bullets(x + 40, y + 20, 1, 0, 200); // Shooting to the right
 	        bullets.add(newBullet);
 	        timeSinceLastShot = 0;
+	        System.out.println("[SHOOT] Bullet added. Total bullets: " + bullets.size());
 	    	}
 	    }
 
