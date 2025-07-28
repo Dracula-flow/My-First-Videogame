@@ -2,6 +2,7 @@ package view;
 
 import entities.Bullets;
 import entities.Player;
+import entities.GameMaster;
 import entities.EnemyGrunt;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,7 +28,7 @@ public class Example extends Application {
     private GraphicsContext gc;
     
     private Player player;
-    private EnemyGrunt grunt;
+    private GameMaster gameMaster;
     //private Enemy enemy;
     //Semplici coordinate per dimostrare il loop di gioco
     // Simula assi e velocità
@@ -41,12 +42,13 @@ public class Example extends Application {
     public void start(Stage primaryStage) {
         canvas = new Canvas(WIDTH, HEIGHT);
         //set Stage boundaries to visible bounds of the main screen
-
+        
         // Prende un contesto grafico, fai conto che sia un pennello per le immagini
         gc = canvas.getGraphicsContext2D();
         player = new Player("Mario",1,1,1,1,100,100);
         //enemy = new Enemy("Giovanni",1,1,1,50,100,100);
-        grunt = new EnemyGrunt("Franco",1,1,1,100,500,100);
+        //grunt = new EnemyGrunt("Franco",1,1,1,100,500,100);
+        gameMaster = new GameMaster(WIDTH,HEIGHT, 3.0);
         //Frame per tenere la Scene
         StackPane root = new StackPane(canvas);
         //Sulla scene viene montato la Canvas
@@ -99,9 +101,31 @@ public class Example extends Application {
     	    
     	    player.update(deltaTime);
     	    //enemy.setTarget(player.getX(), player.getY());
-    	    grunt.update(deltaTime);
+    	    //grunt.update(deltaTime);
+    	    gameMaster.update(deltaTime);
+    	    
+    	    Set<Bullets> bulletsToRemove = new HashSet<>();
+    	    //boolean gruntHit = false;
+    	    
+    	    for (Bullets bullet : player.getBullets()) {
+    	    	for (EnemyGrunt enemy : gameMaster.getEnemies()) {
+    	    		if (enemy.isAlive() && bullet.getBounds().intersects(enemy.getBounds())) {
+    	    			//gruntHit = true;
+    	    			enemy.destroy();
+    	    			bulletsToRemove.add(bullet); // mark bullet for removal
+    	    			System.out.println("[COLLISION] Bullet hit grunt at (" + bullet.getX() + ", " + bullet.getY() + ")");
+    	    			break;
+    	    		}
+    	        }
+    	    }
+    	    
     	
-    }
+    	    //if (gruntHit) {
+    	       //enemy.destroy();
+    	    // ✅ Remove bullets that hit
+    	    player.getBullets().removeAll(bulletsToRemove);
+    	    }
+
     
     private void render() {
     	//sfondo
@@ -112,9 +136,15 @@ public class Example extends Application {
         //Refresh continuo, le ultime due cifre sono la posizione iniziale.
         gc.fillRect(player.getX(), player.getY(), 40, 40);
         
+        //if (grunt.isAlive()) {
         gc.setFill(Color.BLUE);
-        gc.fillRect(grunt.getX(), grunt.getY(), 40, 40);
+        for (EnemyGrunt enemy : gameMaster.getEnemies()) {
+        	if (enemy.isAlive()) {
+        		gc.fillRect(enemy.getX(), enemy.getY(), 40, 40);}
+        		
+        	}
         
+ 
      // Draw all bullets
         gc.setFill(Color.YELLOW);
         for (Bullets bullet : player.getBullets()) {
