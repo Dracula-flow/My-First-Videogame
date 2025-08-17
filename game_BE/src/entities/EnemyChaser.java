@@ -1,6 +1,6 @@
 package entities;
 
-public class EnemyChaser extends Entities {
+public class EnemyChaser extends Entity {
     private double targetX, targetY;
 
     public EnemyChaser(String name, int hp, int atk, int def, int speed, int startX, int startY) {
