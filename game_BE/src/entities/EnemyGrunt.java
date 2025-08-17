@@ -1,9 +1,15 @@
 package entities;
 
+import interfaces.Collidable;
+import interfaces.Renderable;
+
+import static config.GameConfig.*;
+
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
+import javafx.scene.canvas.GraphicsContext;
 
-public class EnemyGrunt extends Entities {
+public class EnemyGrunt extends Entity implements Collidable, Renderable {
 	private boolean alive = true;
 
 	public EnemyGrunt (String name, int hp, int atk, int def, int speed, int startX, int startY) {
@@ -23,12 +29,9 @@ public class EnemyGrunt extends Entities {
         }
     }
 
-    public boolean isAlive() {
-        return alive;
-    }
 
     public void destroy() {
-        this.alive = false;
+        this.hp=0;
     }
 
     // Simple bounding box for collision detection
@@ -41,15 +44,20 @@ public class EnemyGrunt extends Entities {
     }
 
     public double getWidth() {
-        return 50; // Adjust based on actual size
+        return ENEMY_WIDTH; // Adjust based on actual size
     }
 
     public double getHeight() {
-        return 50;
+        return ENEMY_HEIGHT;
     }
     
     public Bounds getBounds() {
-        return new BoundingBox((int)x, (int)y, (int)getWidth(), (int)getHeight());
+        return new BoundingBox(x, y, getWidth(), getHeight() );
+    }
+    
+    @Override
+    public void render (GraphicsContext gc) {
+    	gc.fillRect(x, y, getWidth(), getHeight() );
     }
 }
 

@@ -49,7 +49,7 @@ public class GameMaster {
 	        int startX = screenWidth + 50; // spawn just off-screen on the right
 	        int startY = random.nextInt(screenHeight - 40); // assuming enemy height ~40px
 
-	        EnemyGrunt newEnemy = new EnemyGrunt("Grunt", 1, 1, 1, 100, startX, startY);
+	        EnemyGrunt newEnemy = new EnemyGrunt("Grunt", 1, 25, 1, 100, startX, startY);
 	        enemies.add(newEnemy);
 	        System.out.println("[SPAWNER] Spawned enemy at (" + startX + ", " + startY + ")");
 	    }
