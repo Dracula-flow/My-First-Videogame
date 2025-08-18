@@ -43,10 +43,12 @@ public class EnemyGrunt extends Entity implements Collidable, Renderable {
         return (int) y;
     }
 
+    @Override
     public double getWidth() {
         return ENEMY_WIDTH; // Adjust based on actual size
     }
-
+    
+    @Override
     public double getHeight() {
         return ENEMY_HEIGHT;
     }

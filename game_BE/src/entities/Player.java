@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import config.GameConfig;
 import interfaces.Collidable;
 import interfaces.Renderable;
 
@@ -15,6 +16,7 @@ import javafx.scene.input.KeyCode;
 
 public class Player extends Entity implements Collidable, Renderable {
 	
+	private final int maxHp;
 	private double speed = PLAYER_SPEED;
 	private double shotCooldown = 0.3 ;
 	private double timeSinceLastShot = 0;
@@ -22,8 +24,9 @@ public class Player extends Entity implements Collidable, Renderable {
 
 	public Player(String name, int hp, int atk, int def, int speed, int startX, int startY) {
 		super(name, hp, atk, def, speed, startX, startY);
+		this.maxHp = hp;
 		bullets = new ArrayList<>();
-		// TODO Auto-generated constructor stub
+		
 	}
 	
 
@@ -47,6 +50,11 @@ public class Player extends Entity implements Collidable, Renderable {
 
 			
 		}
+		
+		public int getMaxHp() {
+			return maxHp;
+		}
+		
 		@Override
 	    public void update(double deltaTime) {
 	        // Handle input, etc.
@@ -93,6 +101,16 @@ public class Player extends Entity implements Collidable, Renderable {
         move((normX * speed * deltaTime), (normY * speed * deltaTime));
     }
 
+    @Override
+    public double getWidth() {
+        return GameConfig.PLAYER_WIDTH;
+    }
+
+    @Override
+    public double getHeight() {
+        return GameConfig.PLAYER_HEIGHT;
+    }
+
     
 	@Override
 	public Bounds getBounds() {
@@ -102,6 +120,15 @@ public class Player extends Entity implements Collidable, Renderable {
 	@Override
     public void render (GraphicsContext gc) {
     	gc.fillRect(x, y, PLAYER_WIDTH, PLAYER_HEIGHT );
+    	
+    	// Health bar background
+    	gc.setFill(javafx.scene.paint.Color.DARKGRAY);
+        gc.fillRect(x, y - 10, PLAYER_WIDTH, 5);
+
+        // Health bar foreground (proportional)
+        gc.setFill(javafx.scene.paint.Color.LIMEGREEN);
+        double healthWidth = ((double) hp / maxHp) * PLAYER_WIDTH;
+        gc.fillRect(x, y - 10, healthWidth, 5);
     	
     	gc.setFill(javafx.scene.paint.Color.YELLOW);
     	

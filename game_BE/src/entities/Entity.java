@@ -1,5 +1,9 @@
 package entities;
 
+import javafx.geometry.BoundingBox;
+import javafx.geometry.Bounds;
+import javafx.scene.canvas.GraphicsContext;
+
 public abstract class Entity {
 	protected String name;
 	protected int hp;
@@ -7,6 +11,10 @@ public abstract class Entity {
 	protected int def;
 	protected int speed;
 	protected double x,y;
+	
+	public abstract double getWidth();
+	public abstract double getHeight();
+	
 		
 		//Serve comunque un costruttore-tipo
 		public Entity(String name, int hp, int atk, int def, int speed, int startX, int startY){
@@ -28,6 +36,19 @@ public abstract class Entity {
 		public boolean isAlive() {
 			return hp > 0;
 		}
+		
+		public void destroy() {
+			this.hp=0;
+		}
+	   
+	    public Bounds getBounds() {
+	        return new BoundingBox(x, y, getWidth(), getHeight() );
+	    }
+	    
+	    public void render (GraphicsContext gc) {
+	    	gc.fillRect(x, y, getWidth(), getHeight() );
+	    }
+
 		
 		//Movimento
 		public void move(double dx, double dy) {
