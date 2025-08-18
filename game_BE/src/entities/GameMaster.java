@@ -8,7 +8,8 @@ import java.util.Random;
 
 public class GameMaster {
 	
-	private List<EnemyGrunt> enemies;
+	private List<Entity> enemies;
+	private int totalSpawnCount;
 	private double spawnInterval; 
 	private double timeSinceLastSpawn;
 	private Random random;
@@ -33,9 +34,9 @@ public class GameMaster {
 	            timeSinceLastSpawn = 0;
 	        }
 	     // Update all enemies, remove dead ones
-	        Iterator<EnemyGrunt> iterator = enemies.iterator();
+	        Iterator<Entity> iterator = enemies.iterator();
 	        while (iterator.hasNext()) {
-	            EnemyGrunt enemy = iterator.next();
+	            Entity enemy = iterator.next();
 	            enemy.update(deltaTime);
 
 	            if (!enemy.isAlive()) {
@@ -48,13 +49,23 @@ public class GameMaster {
 	        // Spawn at right edge with random Y position
 	        int startX = screenWidth + 50; // spawn just off-screen on the right
 	        int startY = random.nextInt(screenHeight - 40); // assuming enemy height ~40px
-
-	        EnemyGrunt newEnemy = new EnemyGrunt("Grunt", 1, 25, 1, 100, startX, startY);
+	        
+	        Entity newEnemy;
+	        
+	        if (totalSpawnCount > 0 && totalSpawnCount % 5 == 0) {
+	            newEnemy = new EnemyShooter("Shooter", 2, 10, 1, 150, startX, startY);
+	            }else if
+	        //Every 3 grunts, spawn a chaser
+	         (totalSpawnCount > 0 && totalSpawnCount % 3 == 0) {
+	        	newEnemy = new EnemyChaser("Chaser", 2, 25, 1, 200, startX, startY);
+	        } else {
+	        	newEnemy = new EnemyGrunt("Grunt", 1, 25, 1, 100, startX, startY);
+	        	}
 	        enemies.add(newEnemy);
-	        System.out.println("[SPAWNER] Spawned enemy at (" + startX + ", " + startY + ")");
-	    }
+	        totalSpawnCount ++;
+	    	}
 
-	    public List<EnemyGrunt> getEnemies() {
+	    public List<Entity> getEnemies() {
 	        return enemies;
 	    }
 }

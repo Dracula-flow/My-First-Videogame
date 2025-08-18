@@ -1,12 +1,16 @@
 package view;
 
 import entities.Bullet;
+import entities.EnemyChaser;
 import entities.Player;
 import entities.GameMaster;
-import entities.EnemyGrunt;
-
+import entities.EnemyShooter;
+import entities.Entity;
 import config.GameConfig;
+
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -31,10 +35,7 @@ public class GameApplication extends Application {
     
     private Player player;
     private GameMaster gameMaster;
-    //private Enemy enemy;
-    //Semplici coordinate per dimostrare il loop di gioco
-    // Simula assi e velocità
-    private double speed = 100; // pixels per second
+    
     
     private boolean gameOver = false;
 
@@ -101,7 +102,7 @@ public class GameApplication extends Application {
     	    }
     	    
     	    for (Bullet bullet : player.getBullets()) {
-    	    	for (EnemyGrunt enemy : gameMaster.getEnemies()) {
+    	    	for (Entity enemy : gameMaster.getEnemies()) {
     	    		if (enemy.isAlive() && bullet.getBounds().intersects(enemy.getBounds())) {
     	    			//gruntHit = true;
     	    			enemy.destroy();
@@ -112,13 +113,40 @@ public class GameApplication extends Application {
     	        }
     	    }
     	    
-    	    for (EnemyGrunt enemy : gameMaster.getEnemies()) {
+    	    for (Entity enemy : gameMaster.getEnemies()) {
     	    	if (enemy.isAlive() && enemy.getBounds().intersects(player.getBounds())) {
     	    		player.takeDamage(enemy.getAtk());
     	    		enemy.destroy();
     	    		System.out.println("[HIT] Player hit by enemy. HP: " + player.getHp());
     	    	}
     	    }
+    	    
+    	 // After updating game master
+    	    for (Entity enemy : gameMaster.getEnemies()) {
+    	        if (enemy instanceof EnemyChaser chaser) {
+    	            chaser.setTarget(player.getX(), player.getY());
+    	        }
+    	    }
+    	    
+    	    for (Entity enemy : gameMaster.getEnemies()) {
+    	        if (enemy instanceof EnemyShooter shooter) {
+    	            shooter.setTarget(player.getX(), player.getY());
+    	            
+    	            List<Bullet> shooterBulletsToRemove = new ArrayList<>();
+
+    	            for (Bullet b : shooter.getBullets()) {
+    	                if (b.getBounds().intersects(player.getBounds())) {
+    	                    player.takeDamage(shooter.getAtk()); // or shooter.getAtk()
+    	                    System.out.println("[HIT] Player hit by shooter bullet!");
+    	                    shooterBulletsToRemove.add(b);
+    	                }
+    	            }
+    	            
+    	            // ✅ Correctly remove bullets from shooter's list
+    	            shooter.getBullets().removeAll(shooterBulletsToRemove);
+    	        }
+    	    }
+
     	    
     	    // ✅ Remove bullets that hit
     	    player.getBullets().removeAll(bulletsToRemove);
@@ -137,7 +165,7 @@ public class GameApplication extends Application {
         
         	//if (grunt.isAlive()) {
         	gc.setFill(Color.BLUE);
-        	for (EnemyGrunt enemy : gameMaster.getEnemies()) {
+        	for (Entity enemy : gameMaster.getEnemies()) {
         		enemy.render(gc);
         		}
         
