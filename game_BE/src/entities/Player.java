@@ -13,6 +13,7 @@ import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
+import javafx.scene.paint.Color;
 
 public class Player extends Entity implements Collidable, Renderable {
 	
@@ -119,6 +120,7 @@ public class Player extends Entity implements Collidable, Renderable {
 	
 	@Override
     public void render (GraphicsContext gc) {
+		gc.setFill(getColor());
     	gc.fillRect(x, y, PLAYER_WIDTH, PLAYER_HEIGHT );
     	
     	// Health bar background
@@ -137,4 +139,10 @@ public class Player extends Entity implements Collidable, Renderable {
     	}
     		
     }
+
+
+	@Override
+	protected Color getColor() {
+		return Color.RED;
+	}
 }

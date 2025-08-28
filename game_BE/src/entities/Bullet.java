@@ -8,6 +8,7 @@ import static config.GameConfig.*;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 public class Bullet implements Collidable, Renderable {
     private double x, y;
@@ -36,6 +37,7 @@ public class Bullet implements Collidable, Renderable {
 	
 	@Override
 	public void render (GraphicsContext gc) {
+		gc.setFill(Color.YELLOW);
 		gc.fillRect(x,y, BULLET_WIDTH, BULLET_HEIGHT);
 	}
 }

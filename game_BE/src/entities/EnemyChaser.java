@@ -8,6 +8,7 @@ import interfaces.Renderable;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 public class EnemyChaser extends Entity implements Collidable, Renderable {
     
@@ -66,7 +67,13 @@ public class EnemyChaser extends Entity implements Collidable, Renderable {
         
         @Override
         public void render (GraphicsContext gc) {
+        	gc.setFill(getColor());
         	gc.fillRect(x, y, getWidth(), getHeight() );
         
     }
+
+		@Override
+		protected Color getColor() {
+			return Color.BLUEVIOLET;
+		}
 }
