@@ -8,6 +8,7 @@ import java.util.Random;
 
 import config.GameConfig;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 public class EnemyShooter extends Entity {
 	
@@ -63,10 +64,12 @@ public class EnemyShooter extends Entity {
 
     @Override
     public void render(GraphicsContext gc) {
-        gc.setFill(javafx.scene.paint.Color.ORANGE);
+    	
+    	if (alive) {
+        gc.setFill(getColor());
         super.render(gc);
-
-        gc.setFill(javafx.scene.paint.Color.LIGHTGREEN);
+    	}
+    	
         bullets.forEach(b -> b.render(gc));
     }
 	
@@ -86,8 +89,7 @@ public class EnemyShooter extends Entity {
 	@Override
     public void update(double deltaTime) {
         
-		if (!alive) return;
-		
+		if (alive) {
 		   if (!movingVertically) {
 		       if (x > targetXPosition) {
 		           move(-speed * deltaTime, 0);
@@ -105,16 +107,22 @@ public class EnemyShooter extends Entity {
 		
 		timeSinceLastShot += deltaTime;
 		
-		if(movingVertically) {
-        if (timeSinceLastShot >= shotCooldown) {
+		if(movingVertically && timeSinceLastShot >= shotCooldown) {
             shootAtTarget();
             timeSinceLastShot = 0;
         }
+	}
 
         // Update all bullets
         bullets.forEach(b -> b.update(deltaTime));
     }
+
+	@Override
+	protected Color getColor() {
+		// TODO Auto-generated method stub
+		return Color.YELLOWGREEN;
+	}
 	}
 
 
-}
+

@@ -3,6 +3,7 @@ package entities;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 public abstract class Entity {
 	protected String name;
@@ -46,9 +47,12 @@ public abstract class Entity {
 	    }
 	    
 	    public void render (GraphicsContext gc) {
+	    	gc.setFill(getColor());
 	    	gc.fillRect(x, y, getWidth(), getHeight() );
 	    }
 
+		//Hook generico per dare alle subclasses la possibilità di scegliere il proprio colore
+		protected abstract Color getColor();
 		
 		//Movimento
 		public void move(double dx, double dy) {

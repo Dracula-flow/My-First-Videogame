@@ -8,6 +8,7 @@ import static config.GameConfig.*;
 import javafx.geometry.BoundingBox;
 import javafx.geometry.Bounds;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
 
 public class EnemyGrunt extends Entity implements Collidable, Renderable {
 	private boolean alive = true;
@@ -59,7 +60,14 @@ public class EnemyGrunt extends Entity implements Collidable, Renderable {
     
     @Override
     public void render (GraphicsContext gc) {
+    	gc.setFill(getColor());
     	gc.fillRect(x, y, getWidth(), getHeight() );
     }
+
+	@Override
+	protected Color getColor() {
+		// TODO Auto-generated method stub
+		return Color.BLUE;
+	}
 }
 

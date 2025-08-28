@@ -8,7 +8,7 @@ module blueprint {
 	requires javafx.controls;
 	requires transitive javafx.graphics;
 	requires javafx.base;
-	requires game_BE;
+	requires transitive game_BE;
 	
 	exports view;
 }
