@@ -7,3 +7,7 @@ It includes three types of enemies:
   - Grunts (Blue): they fly in a straight line
   - Chasers (Purple): they fly towards the Player Character
   - Shooters (Yellow): The fly in a straight line towards you, then once in position they fly up and down while shooting.
+
+Controls:
+  - WASD to move;
+  - J to shoot.
